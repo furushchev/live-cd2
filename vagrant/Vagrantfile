@@ -47,6 +47,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   # could not share builder, vagrant, they may fail
   config.vm.synced_folder "../builder", "/opt/builder"
+  config.vm.synced_folder "../docker", "/opt/docker"
 
   config.vm.provision :shell, inline:<<-EOS
         set -x

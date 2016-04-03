@@ -54,24 +54,21 @@ build-local:
 ###
 
 VAGRANT_HOSTNAME=$(shell cd ../vagrant/;vagrant ssh-config $$VM_TYPE --host vagrant | grep HostName | sed 's@^.*HostName @@')
-DOCKER_HOSTNAME=$(shell ifconfig | grep eth0 -A 1  | sed -n 's@.*inet addr:\([0-9.]*\)*.*@\1@p')
 ifeq (${VM_TYPE},ec2)
     VAGRANT_USERNAME=ubuntu
 else
     VAGRANT_USERNAME=vagrant
 endif
-#VAGRANT_HOSTNAME=192.168.33.22
-#DOCKER_HOSTNAME=192.168.33.1
 
 setup-vagrant:
 	$(call colorecho, "docker info on host machine")
 	docker -H tcp://:2375 info
 	$(call colorecho, "check if vagrant is available")
 	sshpass -p vagrant ssh -o StrictHostkeyChecking=no -p 22 ${VAGRANT_USERNAME}@${VAGRANT_HOSTNAME} ls -al
-	#$(call colorecho, "docker info on vagrant machine")
-	#sshpass -p vagrant ssh -o StrictHostkeyChecking=no -p 22 ${VAGRANT_USERNAME}@${VAGRANT_HOSTNAME} docker -H tcp://${DOCKER_HOSTNAME}:2375 info
-	#$(call colorecho, "docker images on vagrant machine")
-	#sshpass -p vagrant ssh -o StrictHostkeyChecking=no -p 22 ${VAGRANT_USERNAME}@${VAGRANT_HOSTNAME} sh -c "uname -a; export DOCKER_HOST=tcp://${DOCKER_HOSTNAME}:2375; docker images"
+	$(call colorecho, "docker info on vagrant machine")
+	sshpass -p vagrant ssh -o StrictHostkeyChecking=no -p 22 ${VAGRANT_USERNAME}@${VAGRANT_HOSTNAME} docker info
+	$(call colorecho, "docker images on vagrant machine")
+	sshpass -p vagrant ssh -o StrictHostkeyChecking=no -p 22 ${VAGRANT_USERNAME}@${VAGRANT_HOSTNAME} sh -c "uname -a; docker images"
 	$(call colorecho, "make lb_build verbose for circleci")
 	# make lb build verbose, not to 'took more than 10 minutes since last output'
 	sshpass -p vagrant ssh -o StrictHostkeyChecking=no -p 22 ${VAGRANT_USERNAME}@${VAGRANT_HOSTNAME} bash -c "set -x; export TERM=xterm; sudo apt-get -y install live-build; sudo sed -i 's@-no-progress@@' /usr/lib/live/build/lb_binary_rootfs"
@@ -79,7 +76,7 @@ setup-vagrant:
 build-vagrant: #depends.txt indigo-tork.sh add-apt-repository
 	$(call colorecho, "build iso on vagrant machine")
 	# location of builder is /opt/builder, see ../vagrant/Vagrantfile config.vm.synced_folder "../builder", "/opt/builder"
-	sshpass -p vagrant ssh -o StrictHostkeyChecking=no -p 22 ${VAGRANT_USERNAME}@${VAGRANT_HOSTNAME} bash -c "set -x; uname -a; set -x; hostname; export DOCKER_HOST=tcp://${DOCKER_HOSTNAME}:2375; export TERM=xterm; mkdir -p build; cd build; cp -r /opt/builder/* ./; ls -al; make ${BUILD_TARGET} VERBOSE=1;"
+	sshpass -p vagrant ssh -o StrictHostkeyChecking=no -p 22 ${VAGRANT_USERNAME}@${VAGRANT_HOSTNAME} bash -c "set -x; uname -a; set -x; hostname; export TERM=xterm; mkdir -p build; cd build; cp -r /opt/builder/* ./; ls -al; make ${BUILD_TARGET} VERBOSE=1;"
 	sshpass -p vagrant scp -o StrictHostkeyChecking=no -P 22 ${VAGRANT_USERNAME}@${VAGRANT_HOSTNAME}:build/{binary,indigo-tork}*.iso .
 
 ###

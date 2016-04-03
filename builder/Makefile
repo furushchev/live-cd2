@@ -16,8 +16,8 @@ all-vagrant: clean setup-vagrant build-vagrant
 all-docker: clean setup-docker build-docker # not working?
 
 ### DEBUG change iso-build to iso-build-for for DBEUG
-#BUILD_TARGET=iso-build
-BUILD_TARGET=iso-build-debug
+BUILD_TARGET=iso-build
+##BUILD_TARGET=iso-build-debug
 iso-build-debug:
 	# install
 	$(call colorecho, "install ubuntu-defaults-builder build-essential")
@@ -79,7 +79,7 @@ setup-vagrant:
 build-vagrant: #depends.txt indigo-tork.sh add-apt-repository
 	$(call colorecho, "build iso on vagrant machine")
 	# location of builder is /opt/builder, see ../vagrant/Vagrantfile config.vm.synced_folder "../builder", "/opt/builder"
-	sshpass -p vagrant ssh -o StrictHostkeyChecking=no -p 22 ${VAGRANT_USERNAME}@${VAGRANT_HOSTNAME} bash -c "set -x; uname -a; set -x; hostname; export DOCKER_HOST=tcp://${DOCKER_HOSTNAME}:2375; export TERM=xterm; mkdir -p build; cd build; cp /opt/builder/{Makefile,*.jpg} ./; ls -al; make ${BUILD_TARGET} VERBOSE=1;"
+	sshpass -p vagrant ssh -o StrictHostkeyChecking=no -p 22 ${VAGRANT_USERNAME}@${VAGRANT_HOSTNAME} bash -c "set -x; uname -a; set -x; hostname; export DOCKER_HOST=tcp://${DOCKER_HOSTNAME}:2375; export TERM=xterm; mkdir -p build; cd build; cp -r /opt/builder/* ./; ls -al; make ${BUILD_TARGET} VERBOSE=1;"
 	sshpass -p vagrant scp -o StrictHostkeyChecking=no -P 22 ${VAGRANT_USERNAME}@${VAGRANT_HOSTNAME}:build/{binary,indigo-tork}*.iso .
 
 ###

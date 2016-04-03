@@ -32,6 +32,7 @@ dependencies:
     - if [ ! -e ~/docker/dockerfile.digest ]; then docker build -t indigo-tork indigo; fi
     - if [ ! -e ~/docker/dockerfile.digest ]; then docker save indigo-tork > ~/docker/indigo-tork.tar; fi
     - if [ ! -e ~/docker/dockerfile.digest ]; then md5sum indigo/Dockerfile  | cut -d' ' -f1 > ~/docker/dockerfile.digest; fi
+    - cd indigo && git checkokut Dockerfile
     # setup vagrant
     - cd vagrant && make all-$VM_TYPE # make will install, add and up
   post:
@@ -43,6 +44,8 @@ test:
   override:
     - echo "Running ISO Builder"
     # build iso
+    - cd builder && make depends.txt indigo-tork.sh add-apt-repository && ls -al
+    - cd vagrant && sleep 60 && vagrant ssh $VM_TYPE -- ls -al /opt/builder # check if the file is actuall created
     - cd builder && VM_TYPE=$VM_TYPE make && ls -al binary.hybrid.iso
 
   post:

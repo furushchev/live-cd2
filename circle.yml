@@ -37,8 +37,7 @@ dependencies:
   post:
     - cd vagrant && vagrant status $VM_TYPE
     - cd vagrant && vagrant ssh $VM_TYPE -- ifconfig
-    - cd vagrant && vagrant ssh $VM_TYPE -- cp /opt/docker/indigo-tork.tar .
-    - cd vagrant && vagrant ssh $VM_TYPE -- docker load --input indigo-tork.tar
+    - cd vagrant && while ! vagrant ssh $VM_TYPE -- docker images | grep indigo-tork; do vagrant ssh $VM_TYPE -- bash -c \"docker load --input indigo-tork.tar\"; done
     - cd vagrant && vagrant ssh $VM_TYPE -- docker images
 
 test:

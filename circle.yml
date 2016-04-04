@@ -38,6 +38,11 @@ dependencies:
     - cd vagrant && vagrant status $VM_TYPE
     - cd vagrant && vagrant ssh $VM_TYPE -- ifconfig
     - cd vagrant && vagrant ssh $VM_TYPE -- ls -al  /opt/docker/
+    - cd vagrant && vagrant ssh $VM_TYPE -- ls -al  /opt/docker/
+    - cd vagrant && vagrant ssh $VM_TYPE -- ls -al  /opt/docker/
+    - cd vagrant && vagrant ssh $VM_TYPE -- ls -al  /opt/docker/
+    - cd vagrant && vagrant ssh $VM_TYPE -- ls -al  /opt/docker/
+    - cd vagrant && vagrant ssh $VM_TYPE -- ls -al  /opt/docker/
     - cd vagrant && while ! vagrant ssh $VM_TYPE -- ls /opt/docker/indigo-tork.tar; do echo "waiting for docker image..."; done; echo "ok"
     - cd vagrant && vagrant ssh $VM_TYPE -- ls -al  /opt/docker/
     - cd vagrant && vagrant ssh $VM_TYPE -- sh -c 'docker load --input /opt/docker/indigo-tork.tar'

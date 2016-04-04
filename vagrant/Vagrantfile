@@ -29,12 +29,12 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       aws.ami               = "ami-fce3c696" # Ubuntu Server 14.04 LTS (HVM), SSD Volume Type
       aws.block_device_mapping = [{ 'DeviceName' => '/dev/sda1',
                                     'Ebs.VolumeSize' => 30,
-#                                    'Ebs.VolumeType' => 'gp2', # use SSD
+                                    'Ebs.VolumeType' => 'gp2', # use SSD
                                     'Ebs.DeleteOnTermination' => 'true'}]
 
       aws.keypair_name      = 'vagrant'
-      aws.instance_type     = "t2.micro"
-      #aws.instance_type     = "m3.large"
+      #aws.instance_type     = "t2.micro"
+      aws.instance_type     = "m3.large"
 
       aws.security_groups = [ 'sg-7bc99803' ]
       aws.subnet_id = "subnet-797ff953"

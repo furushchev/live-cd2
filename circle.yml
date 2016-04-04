@@ -53,5 +53,5 @@ test:
     - cd vagrant && vagrant ssh $VM_TYPE -- df -h
     - cp builder/indigo-tork-*.iso $CIRCLE_ARTIFACTS
     # stop vagrant
-    #- cd vagrant && make clean
+    - cd vagrant && make clean
 

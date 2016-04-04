@@ -60,6 +60,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
         apt-get install -y ubuntu-defaults-builder
         wget -qO- https://get.docker.com/ | sh
         usermod -aG docker vagrant
+        usermod -aG docker ubuntu
         sed -i 's@#DOCKER_OPTS=@DOCKER_OPTS="-H tcp://0.0.0.0:2375 -H unix:///var/run/docker.sock" #@' /etc/default/docker
         service docker restart
         locale-gen en_US.UTF-8

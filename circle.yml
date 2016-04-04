@@ -37,7 +37,7 @@ dependencies:
   post:
     - cd vagrant && vagrant status $VM_TYPE
     - cd vagrant && vagrant ssh $VM_TYPE -- ifconfig
-    - cd vagrant && while ! vagrant ssh ec2 -- ls /opt/docker/indigo-tork.tar2; do echo "waiting for docker image..."; done; echo "ok"
+    - cd vagrant && while ! vagrant ssh ec2 -- ls /opt/docker/indigo-tork.tar; do echo "waiting for docker image..."; done; echo "ok"
     - cd vagrant && vagrant ssh $VM_TYPE -- ls -al  /opt/docker/
     - cd vagrant && vagrant ssh $VM_TYPE -- sh -c 'docker load --input /opt/docker/indigo-tork.tar'
     - cd vagrant && vagrant ssh $VM_TYPE -- docker images

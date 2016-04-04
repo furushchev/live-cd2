@@ -214,13 +214,13 @@ iso-build: depends.txt indigo-tork.sh add-apt-repository
 	cp archives/* ./config/archives/
 
 	## use latest kernel
-	#$(call colorecho, "use latest kernel")
-	#sed -i 's@generic-lts-wily@generic-lts-xenial@' config/chroot
+	$(call colorecho, "use latest kernel")
+	sed -i 's@generic-lts-wily@generic-lts-xenial@' config/chroot
 
 	$(call colorecho, "run ubuntu-defaults-image (build part)")
 	chmod u+x ./tork-defaults-build
 	# run twice http://blog.n-z.jp/blog/2014-07-13-build-rubylive-on-vm.html
-	sudo ./tork-defaults-build || sudo ./tork-defaults-build
+	sudo ./tork-defaults-build #|| sudo ./tork-defaults-build
 
 	$(call colorecho, "rename binary.hybrid.iso")
 	cp binary.hybrid.iso indigo-tork-`date +%Y%m%d_%H%M%S`.iso

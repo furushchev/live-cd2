@@ -4,16 +4,16 @@ RUN apt-get update
 
 ## for docker in docker : https://gist.github.com/henrik-muehe/6155333
 #CIRCLECI## Fake a fuse install
-#CIRCLECI#RUN apt-get install libfuse2
-#CIRCLECI#RUN mkdir -p /tmp/fuse
-#CIRCLECI#RUN cd /tmp/fuse ; apt-get download fuse
-#CIRCLECI#RUN cd /tmp/fuse ; dpkg-deb -x fuse_* .
-#CIRCLECI#RUN cd /tmp/fuse ; dpkg-deb -e fuse_*
-#CIRCLECI#RUN cd /tmp/fuse ; rm fuse_*.deb
-#CIRCLECI#RUN cd /tmp/fuse ; /bin/echo -en '#!/bin/bash\nexit 0\n' > DEBIAN/postinst
-#CIRCLECI#RUN cd /tmp/fuse ; dpkg-deb -b . /fuse.deb
-#CIRCLECI#RUN cd /tmp/fuse ; dpkg -i /fuse.deb
-#CIRCLECI#RUN rm -fr /tmp/fuse
+RUN apt-get install libfuse2; \
+              mkdir -p /tmp/fuse; \
+              cd /tmp/fuse ; apt-get download fuse; \
+              cd /tmp/fuse ; dpkg-deb -x fuse_* .; \
+              cd /tmp/fuse ; dpkg-deb -e fuse_*; \
+              cd /tmp/fuse ; rm fuse_*.deb; \
+              cd /tmp/fuse ; /bin/echo -en '#!/bin/bash\nexit 0\n' > DEBIAN/postinst; \
+              cd /tmp/fuse ; dpkg-deb -b . /fuse.deb; \
+              cd /tmp/fuse ; dpkg -i /fuse.deb; \
+              rm -fr /tmp/fuse #CIRCLECI#
 
 # make home directory (user name other than ubuntu is not woking because it is hard corded /usr/share/livecd-rootfs/live-build/auto/config)
 RUN groupadd -g 999 ubuntu

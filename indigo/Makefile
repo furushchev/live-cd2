@@ -27,6 +27,6 @@ clean:
 
 allclean:
 	$(call colorecho, "rm stpped containers")
-	test `docker ps | wc -l` -gt 1 && docker ps -a | tail -n +2 | cut -d\  -f1 | xargs docker rm || echo "ok"
+	test `docker ps -a | wc -l` -gt 1 && docker ps -a | tail -n +2 | cut -d\  -f1 | xargs docker rm || echo "ok"
 	make clean
 

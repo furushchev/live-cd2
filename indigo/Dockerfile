@@ -16,9 +16,9 @@ RUN apt-get install libfuse2; \
               rm -fr /tmp/fuse #CIRCLECI#
 
 # make home directory (user name other than ubuntu is not woking because it is hard corded /usr/share/livecd-rootfs/live-build/auto/config)
-RUN groupadd -g 999 ubuntu
+RUN getent group 999 || groupadd -g 999 ubuntu
 #RUN useradd -p `perl -e "print(crypt('ubuntu', 'jp'));"` ubuntu
-RUN useradd -m -u 999 -g 999 -p jpZUeiXA/a9ws ubuntu
+RUN getent passwd 1000 || useradd -m -u 999 -g 999 -p jpZUeiXA/a9ws ubuntu
 RUN echo "ubuntu ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/ubuntu
 
 ##

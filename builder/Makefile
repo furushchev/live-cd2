@@ -17,7 +17,7 @@ all-docker: clean setup-docker build-docker # not working?
 
 ### DEBUG change iso-build to iso-build-for for DBEUG
 BUILD_TARGET=iso-build
-BUILD_TARGET=iso-build-debug
+#BUILD_TARGET=iso-build-debug
 iso-build-debug:
 	# install
 	$(call colorecho, "install ubuntu-defaults-builder build-essential")

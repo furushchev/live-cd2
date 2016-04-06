@@ -216,7 +216,7 @@ iso-build: depends.txt indigo-tork.sh add-apt-repository
 	# add-apt-repository generate fiels in archvies, since lb config cleans config/archives
 	$(call colorecho, "make add-apt-repository")
 	make add-apt-repository
-	###cp archives/* ./config/archives/
+	cp archives/* ./config/archives/
 
 	## use latest kernel
 	$(call colorecho, "use latest kernel")

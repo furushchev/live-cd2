@@ -5,9 +5,9 @@
 set -x
 set -e
 
-sudo cp -ar ~/iso/EFI/ ~/iso/README.diskdefines ~/iso/boot/ ~/iso/dists/ ~/iso/pool/ ~/iso/preseed/ ./binary
+sudo cp -ar /tmp/iso/EFI/ /tmp/iso/README.diskdefines /tmp/iso/boot/ /tmp/iso/dists/ /tmp/iso/pool/ /tmp/iso/preseed/ ./binary
 sudo ls -al binary/
-sudo cp -a ~/iso/.disk/base_installable ~/iso/.disk/cd_type ./binary/.disk/
+sudo cp -a /tmp/iso/.disk/base_installable /tmp/iso/.disk/cd_type ./binary/.disk/
 echo 'https://wiki.ubuntu.com/TrustyTahr/ReleaseNotes' | sudo tee ./binary/.disk/release_notes_url
 
 echo "Ubuntu 14.04 \"Trusty Tahr\" - Release amd64(`date '+%Y%m%d.1'`)" | sudo tee ./binary/.disk/info

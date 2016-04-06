@@ -16,7 +16,7 @@ dependencies:
     # download iso (http://askubuntu.com/questions/412280/extracting-iso-images-to-hd)
     - if [ ! -e ~/iso/ubuntu-14.04.4-desktop-amd64.iso ]; then cd ~/iso; wget http://releases.ubuntu.com/14.04.4/ubuntu-14.04.4-desktop-amd64.iso; fi
     - sudo apt-get -f install p7zip-full
-    - 7z x -oiso ~/iso/ubuntu-14.04.4-desktop-amd64.iso
+    - 7z x -o/tmp/iso ~/iso/ubuntu-14.04.4-desktop-amd64.iso
     # enable tcp socket
     - sudo sed -i 's@^DOCKER_OPTS="@DOCKER_OPTS="-H tcp://0.0.0.0:2375 -H unix:///var/run/docker.sock @' /etc/default/docker
     - sudo service docker restart

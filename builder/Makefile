@@ -17,7 +17,7 @@ all-docker: clean setup-docker build-docker # not working?
 
 ### DEBUG change iso-build to iso-build-for for DBEUG
 BUILD_TARGET=iso-build
-#BUILD_TARGET=iso-build-debug
+BUILD_TARGET=iso-build-debug
 iso-build-debug:
 	# install
 	$(call colorecho, "install ubuntu-defaults-builder build-essential")
@@ -47,7 +47,8 @@ iso-build-debug:
 ###
 ###
 setup-local:
-	sudo apt-get install -y git build-essential fakeroot debhelper gdebi live-build ubuntu-defaults-builder
+	sudo apt-get install -y git build-essential fakeroot debhelper gdebi live-build ubuntu-defaults-builder p7zip-full
+	7z x -y -o/tmp/iso ~/Downloads/ubuntu-14.04.4-desktop-amd64.iso
 	make clean
 
 build-local:
@@ -196,10 +197,10 @@ iso-build: depends.txt indigo-tork.sh add-apt-repository
 
 	# custom from Dockerfile
 	$(call colorecho, "cat indigo-tork.sh >> tork-defaults/hooks/chroot")
-	cat indigo-tork.sh >> tork-defaults/hooks/chroot
+	###cat indigo-tork.sh >> tork-defaults/hooks/chroot
 
 	$(call colorecho, "cat depends.txt >> tork-defaults/depends.txt")
-	cat depends.txt >> tork-defaults/depends.txt
+	###cat depends.txt >> tork-defaults/depends.txt
 
 	# build
 	$(call colorecho, "build tork-defaults package")
@@ -215,7 +216,7 @@ iso-build: depends.txt indigo-tork.sh add-apt-repository
 	# add-apt-repository generate fiels in archvies, since lb config cleans config/archives
 	$(call colorecho, "make add-apt-repository")
 	make add-apt-repository
-	cp archives/* ./config/archives/
+	###cp archives/* ./config/archives/
 
 	## use latest kernel
 	$(call colorecho, "use latest kernel")

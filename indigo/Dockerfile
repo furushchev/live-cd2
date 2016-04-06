@@ -19,7 +19,7 @@ RUN apt-get install libfuse2; \
 # we should not run this on live-build
 RUN getent group 999 || groupadd -g 999 ubuntu #CIRCLECI#
 #RUN useradd -p `perl -e "print(crypt('ubuntu', 'jp'));"` ubuntu
-RUN getent passwd 1000 || useradd -m -u 999 -g 999 -p jpZUeiXA/a9ws ubuntu #CIRCLECI#
+RUN getent passwd 999 || useradd -m -u 999 -g 999 -p jpZUeiXA/a9ws ubuntu #CIRCLECI#
 RUN echo "ubuntu ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/ubuntu
 
 ##
@@ -76,7 +76,7 @@ RUN add-apt-repository -y ppa:yannubuntu/boot-repair && apt-get update && apt-ge
 
 # doocker (this create new groups, so it should be later than creating ubuntu user process)
 RUN wget -qO- https://get.docker.com/ | sh
-RUN usermod -aG docker ubuntu
+RUN getent passwd ubuntu || usermod -aG docker ubuntu #CIRCLECI#
 
 # inxi
 RUN apt-get -y install inxi

@@ -126,7 +126,7 @@ tork-defaults:
 	$(call colorecho, "setup i18n/langpacks.txt")
 	echo "en" >> tork-defaults/i18n/langpacks.txt
 	echo "ja complete" >> tork-defaults/i18n/langpacks.txt
-	$(call colorecho, "setup i18n/langpac.txt")
+	$(call colorecho, "setup i18n/keyboard.txt")
 	echo "jp" >> tork-defaults/i18n/keyboard.txt
 
 	$(call colorecho, "add gnome-terminal to unity/launchers.txt")

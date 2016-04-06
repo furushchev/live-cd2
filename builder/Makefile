@@ -200,7 +200,7 @@ iso-build: depends.txt indigo-tork.sh add-apt-repository
 	###cat indigo-tork.sh >> tork-defaults/hooks/chroot
 
 	$(call colorecho, "cat depends.txt >> tork-defaults/depends.txt")
-	###cat depends.txt >> tork-defaults/depends.txt
+	cat depends.txt >> tork-defaults/depends.txt
 
 	# build
 	$(call colorecho, "build tork-defaults package")

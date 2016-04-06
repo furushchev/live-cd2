@@ -197,7 +197,7 @@ iso-build: depends.txt indigo-tork.sh add-apt-repository
 
 	# custom from Dockerfile
 	$(call colorecho, "cat indigo-tork.sh >> tork-defaults/hooks/chroot")
-	###cat indigo-tork.sh >> tork-defaults/hooks/chroot
+	cat indigo-tork.sh >> tork-defaults/hooks/chroot
 
 	$(call colorecho, "cat depends.txt >> tork-defaults/depends.txt")
 	cat depends.txt >> tork-defaults/depends.txt

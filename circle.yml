@@ -59,7 +59,7 @@ test:
   post:
     # copy results
     - cd vagrant && vagrant ssh $VM_TYPE -- df -h
-    - cp builder/*.iso $CIRCLE_ARTIFACTS
+    - cp builder/indigo-tork-*.iso $CIRCLE_ARTIFACTS
     # stop vagrant
     - cd vagrant && make clean
 

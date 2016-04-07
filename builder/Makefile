@@ -197,7 +197,7 @@ iso-build: depends.txt indigo-tork.sh add-apt-repository
 
 	# custom from Dockerfile
 	$(call colorecho, "cat indigo-tork.sh >> tork-defaults/hooks/chroot")
-	#cat indigo-tork.sh >> tork-defaults/hooks/chroot
+	cat indigo-tork.sh >> tork-defaults/hooks/chroot
 
 	$(call colorecho, "cat depends.txt >> tork-defaults/depends.txt")
 	cat depends.txt >> tork-defaults/depends.txt
@@ -220,7 +220,7 @@ iso-build: depends.txt indigo-tork.sh add-apt-repository
 
 	## use latest kernel
 	$(call colorecho, "use latest kernel")
-	#sed -i 's@generic-lts-wily@generic-lts-xenial@' config/chroot
+	sed -i 's@generic-lts-wily@generic-lts-xenial@' config/chroot
 
 	$(call colorecho, "run ubuntu-defaults-image (build part)")
 	chmod u+x ./tork-defaults-build

@@ -225,7 +225,9 @@ iso-build: depends.txt indigo-tork.sh add-apt-repository
 	$(call colorecho, "run ubuntu-defaults-image (build part)")
 	chmod u+x ./tork-defaults-build
 	# run twice http://blog.n-z.jp/blog/2014-07-13-build-rubylive-on-vm.html
-	sudo ./tork-defaults-build || sudo ./tork-defaults-build
+	## running twice may failed (cp: cannot stat 'chroot/boot/vmlinuz-*': No such file or directory) error
+	sudo ./tork-defaults-build
+	[ -e binary.hybrid.iso ] || sudo ./tork-defaults-build
 
 	# https://lists.ubuntu.com/archives/ubuntu-devel/2014-November/038540.html
 	$(call colorecho, "EFI hack")

@@ -157,10 +157,10 @@ tork-defaults/debian/rc.local:
 	$(call colorecho, "Generate the SSH keys if non-existent")
 	sed -i 's%exit 0%### Generate the SSH keys if non-existent\n[ ! -f /etc/ssh/ssh_host_dsa_key ] \&\& dpkg-reconfigure openssh-server\n\nexit 0%' tork-defaults/debian/rc.local
 
-tork-defaults/debian/tork-defaults.install: tork-defaults/debian/20_tork-defaults.gschema.override tork-defaults/debian/rc.local
+tork-defaults/debian/tork-defaults.install: tork-defaults/debian/20_tork-defaults.gschema.override # tork-defaults/debian/rc.local
 	$(call colorecho, "setup tork-defaults.install")
 	echo "debian/20_tork-defaults.gschema.override usr/share/glib-2.0/schemas"  >> tork-defaults/debian/tork-defaults.install
-	echo "debian/rc.local etc/"  >> tork-defaults/debian/tork-defaults.install
+	#echo "debian/rc.local etc/"  >> tork-defaults/debian/tork-defaults.install
 
 add-apt-repository: archives/tork-defaults.list archives/tork-defaults.key
 	# https://lists.debian.org/debian-live/2012/01/msg00008.html says lb2 uses config/chroot_sources but lb3 uses config/archives, but if we only have config files in archives, we have "Some packages could not be installed" error on "P: Begin installing packages (install pass)..."
@@ -217,6 +217,11 @@ iso-build: depends.txt indigo-tork.sh add-apt-repository
 	$(call colorecho, "make add-apt-repository")
 	make add-apt-repository
 	cp archives/* ./config/archives/
+
+	$(call colorecho, "setup rc.local")
+	cp /etc/rc.local config/includes.chroot/
+	$(call colorecho, "Generate the SSH keys if non-existent")
+	sed -i 's%exit 0%### Generate the SSH keys if non-existent\n[ ! -f /etc/ssh/ssh_host_dsa_key ] \&\& dpkg-reconfigure openssh-server\n\nexit 0%' config/includes.chroot/rc.local
 
 	## use latest kernel
 	$(call colorecho, "use latest kernel")

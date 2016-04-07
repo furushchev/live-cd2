@@ -220,7 +220,7 @@ iso-build: depends.txt indigo-tork.sh add-apt-repository
 
 	## use latest kernel
 	$(call colorecho, "use latest kernel")
-	sed -i 's@generic-lts-wily@generic-lts-xenial@' config/chroot
+	#sed -i 's@generic-lts-wily@generic-lts-xenial@' config/chroot
 
 	$(call colorecho, "run ubuntu-defaults-image (build part)")
 	chmod u+x ./tork-defaults-build

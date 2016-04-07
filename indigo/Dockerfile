@@ -81,9 +81,6 @@ RUN getent passwd ubuntu || usermod -aG docker ubuntu #CIRCLECI#
 # inxi
 RUN apt-get -y install inxi
 
-# grub
-RUN apt-get -y install grub-efi-amd64-signed
-
 ## clean up
 RUN apt-get clean
 

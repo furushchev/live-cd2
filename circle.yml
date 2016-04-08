@@ -2,7 +2,6 @@ machine:
   services:
     - docker
   environment:
-    MAKEFLAGS: "-i"
     VM_TYPE: "ec2"
 
 dependencies:

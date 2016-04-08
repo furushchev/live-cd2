@@ -246,6 +246,32 @@ iso-run:
 	$(call colorecho, "run indigo.tork.iso with kvm")
 	kvm --cdrom indigo.tork.iso -m 1G
 
+
+### test iso with packer
+packer.json: packer.json.in
+	# add iso filename and md5sum
+	cat packer.json.in | sed 's#@ISO_MD5SUM@#$(shell md5sum indigo-tork-*.iso | cut -f1 -d\ )#' | sed 's#@ISO_URL@#file://$(CURDIR)/$(shell ls indigo-tork-*.iso)#' | tee packer.json;
+
+packer:
+	# download packer
+	wget https://releases.hashicorp.com/packer/0.10.0/packer_0.10.0_linux_amd64.zip
+	unzip packer_0.10.0_linux_amd64.zip
+
+packer_virtualbox-iso_virtualbox.box: packer.json packer-postinstall.sh
+	# build box
+	./packer build --force -only=virtualbox-iso packer.json
+
+iso-test: packer packer.json packer_virtualbox-iso_virtualbox.box
+	#vagrant box remove -f iso || echo "ok"
+	#vagrant destroy -f default || ecoh "ok"
+	#rm -f Vagrantfile
+	#vagrant box add --force iso packer_virtualbox-iso_virtualbox.box
+	#vagrant box list
+	#vagrant init iso
+	#vagrant up
+
+
+
 clean:
 	# rm old docker image
 	$(call colorecho, "reomve old docker image")

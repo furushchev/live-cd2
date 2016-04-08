@@ -1,0 +1,56 @@
+{
+  "provisioners": [
+    {
+      "type": "shell",
+      "scripts": [
+        "packer-postinstall.sh"
+      ],
+      "override": {
+        "virtualbox-iso": {
+          "execute_command": "{{ .Vars }} bash -x -i '{{.Path}}'"
+        }
+      }
+    }
+  ],
+  "builders": [
+    {
+      "type": "virtualbox-iso",
+      "boot_command": [
+        "<esc><wait>",
+        "<esc><wait>",
+        "<enter><wait>",
+        "/casper/vmlinuz file=/cdrom/preseed/ubuntu.seed boot=casper initrd=/casper/initrd.lz text nosplash noprompt --<enter>",
+        "<wait10><wait10><wait10><wait10><wait10>",
+        "sudo passwd ubuntu<enter><wait>ubuntu<enter><wait>ubuntu<enter><wait>"
+      ],
+      "boot_wait": "4s",
+      "disk_size": 10140,
+      "guest_os_type": "Ubuntu_64",
+      "http_directory": "http",
+      "iso_checksum": "@ISO_MD5SUM@",
+      "iso_checksum_type": "md5",
+      "iso_url": "@ISO_URL@",
+      "ssh_username": "ubuntu",
+      "ssh_password": "ubuntu",
+      "ssh_port": 22,
+      "ssh_wait_timeout": "1000s",
+      "shutdown_command": "echo 'shutdown -P now' > shutdown.sh; sudo -S sh 'shutdown.sh'",
+      "guest_additions_path": "VBoxGuestAdditions_{{.Version}}.iso",
+      "virtualbox_version_file": ".vbox_version",
+      "vboxmanage": [
+        [
+          "modifyvm",
+          "{{.Name}}",
+          "--memory",
+          "512"
+        ],
+        [
+          "modifyvm",
+          "{{.Name}}",
+          "--cpus",
+          "1"
+        ]
+      ]
+    }
+  ]
+}

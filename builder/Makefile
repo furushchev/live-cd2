@@ -225,8 +225,8 @@ iso-build: depends.txt indigo-tork.sh add-apt-repository
 	sed -i 's%^exit 0%### Generate the SSH keys if non-existent\n[ ! -f /etc/ssh/ssh_host_dsa_key ] \&\& dpkg-reconfigure openssh-server\n\nexit 0%' config/includes.chroot/etc/rc.local
 
 	## use latest kernel
-	$(call colorecho, "use latest kernel")
-	sed -i 's@generic-lts-wily@generic-lts-xenial@' config/chroot
+	#$(call colorecho, "use latest kernel")
+	#sed -i 's@generic-lts-wily@generic-lts-xenial@' config/chroot
 
 	$(call colorecho, "run ubuntu-defaults-image (build part)")
 	chmod u+x ./tork-defaults-build

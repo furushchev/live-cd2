@@ -49,11 +49,11 @@ up-ec2:
 down:
 	#vagrant destroy -f
 	$(call colorecho, "vagrant halt")
-	vagrant halt
+	vagrant halt || echo "ok"
 	$(call colorecho, "vagrant stop ec2")
-	vagrant destroy -f ec2
+	vagrant destroy -f ec2 || echo "ok"
 	$(call colorecho, "vagrant status")
-	vagrant status
+	vagrant status || echo "ok"
 
 
 vagrant_1.8.1_x86_64.deb:
@@ -66,8 +66,8 @@ trusty-server-cloudimg-amd64-vagrant-disk1.box:
 
 clean: down
 	$(call colorecho, "clean")
-	vagrant destroy -f vbox
-	vagrant destroy -f ec2
+	vagrant destroy -f vbox || echo "ok"
+	vagrant destroy -f ec2 || echo "ok"
 
 	$(call colorecho, "vagrant status")
-	vagrant status
+	vagrant status || echo "ok"

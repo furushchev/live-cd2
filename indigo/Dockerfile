@@ -19,7 +19,7 @@ RUN apt-get install libfuse2; \
 # we should not run this on live-build
 RUN getent group 999 || groupadd -g 999 ubuntu
 #RUN useradd -p `perl -e "print(crypt('ubuntu', 'jp'));"` ubuntu
-RUN getent passwd 1000 || useradd -m -u 999 -g 999 -p jpZUeiXA/a9ws ubuntu
+RUN useradd -m -u 999 -g 999 -p jpZUeiXA/a9ws ubuntu || /bin/echo -e "ubuntu\nubuntu\n" | sudo passwd ubuntu
 RUN echo "ubuntu ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/ubuntu
 
 ##

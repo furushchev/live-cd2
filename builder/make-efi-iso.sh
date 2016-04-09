@@ -16,6 +16,12 @@ sudo chmod -R +r .
 sudo rm -f SHA256SUMS
 sudo find . -type f -exec md5sum {} \; | grep -v isolinux | grep -v md5sum.txt | sudo tee md5sum.txt
 
+# skip install/boot http://askubuntu.com/questions/644798/custom-livecd-skip-install-boot-to-desktop-and-run-custom-app
+#sed -i 's@default vesamenu.c32@default live@' isolinux/isolinux.cfg
+sed -i 's@^ui @#ui @' isolinux/isolinux.cfg
+# remove prompt to eject cd : http://www.pendrivelinux.com/ubuntu-remove-the-prompt-to-eject-cd/
+sed -i 's@quiet splash --@quiet splash noprompt --@' isolinux/txt.cfg
+
 cd ..
 cat <<EOF | sudo tee sort.txt
 100 boot/

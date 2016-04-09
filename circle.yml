@@ -55,9 +55,9 @@ test:
     - echo "Running ISO Builder"
     - cd builder && VM_TYPE=$VM_TYPE make && ls -al binary.hybrid.iso
     # test iso
-    - echo "Running Test on ISO "
-    - cd vagrant && make install-vbox
-    - cd builder && make iso-test
+    #- echo "Running Test on ISO "
+    #- cd vagrant && make install-vbox
+    #- cd builder && make iso-test
 
   post:
     # copy results

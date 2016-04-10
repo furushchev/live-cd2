@@ -56,7 +56,7 @@ test:
     - cd builder && VM_TYPE=$VM_TYPE make && ls -al binary.hybrid.iso
     # test iso
     - echo "Running Test on ISO "
-    - cd vagrant && vagrant ssh $VM_TYPE -- sh -c 'cd /opt/builder; make iso-test'
+    - cd vagrant && vagrant ssh $VM_TYPE -- make -C /opt/builder iso-test
 
   post:
     # copy results

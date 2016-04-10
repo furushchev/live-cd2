@@ -270,12 +270,19 @@ packer:
 	wget https://releases.hashicorp.com/packer/0.10.0/packer_0.10.0_linux_amd64.zip
 	dpkg-query -W -f='$${Status} $${Version}\n' unzip || sudo apt-get -y install unzip
 	unzip packer_0.10.0_linux_amd64.zip
+	dpkg-query -W -f='$${Status} $${Version}\n' qemu-system-x86 || sudo apt-get -y install qemu-system-x86
+	vagrant plugin list | grep qemu || vagrant plugin install qemu
+
 
 packer_virtualbox-iso_virtualbox.box: packer.json packer-postinstall.sh
 	# build box
 	./packer build --force -only=virtualbox-iso packer.json
 
-iso-test: packer packer.json packer_virtualbox-iso_virtualbox.box
+packer_qemu_virtualbox.box: packer.json packer-postinstall.sh
+	# build box
+	./packer build --force -only=qemu packer.json
+
+iso-test: packer packer.json packer_qemu_virtualbox.box
 	#vagrant box remove -f iso || echo "ok"
 	#vagrant destroy -f default || ecoh "ok"
 	#rm -f Vagrantfile

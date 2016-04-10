@@ -6,7 +6,7 @@
         "packer-postinstall.sh"
       ],
       "override": {
-        "virtualbox-iso": {
+        "qemu": {
           "execute_command": "{{ .Vars }} bash -x -i '{{.Path}}'"
         }
       }
@@ -14,11 +14,10 @@
   ],
   "builders": [
     {
-      "type": "virtualbox-iso",
+      "type": "qemu",
       "headless": "true",
       "boot_wait": "4s",
       "disk_size": 10140,
-      "guest_os_type": "Ubuntu_64",
       "http_directory": "http",
       "iso_checksum": "@ISO_MD5SUM@",
       "iso_checksum_type": "md5",
@@ -27,23 +26,7 @@
       "ssh_password": "tork",
       "ssh_port": 22,
       "ssh_wait_timeout": "1000s",
-      "shutdown_command": "echo 'shutdown -P now' > shutdown.sh; sudo -S sh 'shutdown.sh'",
-      "guest_additions_path": "VBoxGuestAdditions_{{.Version}}.iso",
-      "virtualbox_version_file": ".vbox_version",
-      "vboxmanage": [
-        [
-          "modifyvm",
-          "{{.Name}}",
-          "--memory",
-          "512"
-        ],
-        [
-          "modifyvm",
-          "{{.Name}}",
-          "--cpus",
-          "1"
-        ]
-      ]
+      "shutdown_command": "echo 'shutdown -P now' > shutdown.sh; sudo -S sh 'shutdown.sh'"
     }
   ]
 }

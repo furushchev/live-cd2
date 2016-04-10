@@ -8,7 +8,9 @@ all-vbox: install-vbox add-vbox up-vbox
 
 all-ec2: install-ec2 add-ec2 up-ec2
 
+ifneq ("$(wildcard ../color.mk)","") # http://stackoverflow.com/questions/5553352/how-do-i-check-if-file-exists-in-makefile
 include ../color.mk
+endif
 
 install-vbox: install-vagrant
 	$(call colorecho, "install virtualbox")

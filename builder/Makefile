@@ -265,6 +265,7 @@ packer.json: packer.json.in
 packer:
 	# download packer
 	wget https://releases.hashicorp.com/packer/0.10.0/packer_0.10.0_linux_amd64.zip
+	dpkg-query -W -f='$${Status} $${Version}\n' unzip || sudo apt-get -y install unzip
 	unzip packer_0.10.0_linux_amd64.zip
 
 packer_virtualbox-iso_virtualbox.box: packer.json packer-postinstall.sh

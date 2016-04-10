@@ -233,6 +233,9 @@ iso-build: depends.txt indigo-tork.sh add-apt-repository
 	echo '' >> config/hooks/0001-setup_user_tork.hook.chroot
 	echo 'echo "I: set tork user password"' >> config/hooks/0001-setup_user_tork.hook.chroot
 	echo 'echo "tork:tork" | chpasswd' >> config/hooks/0001-setup_user_tork.hook.chroot
+	echo '' >> config/hooks/0001-setup_user_tork.hook.chroot
+	echo 'echo "I: add tork user to sudo"' >> config/hooks/0001-setup_user_tork.hook.chroot
+	echo 'echo "tork ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/tork' >> config/hooks/0001-setup_user_tork.hook.chroot
 
 	## use latest kernel
 	#$(call colorecho, "use latest kernel")

@@ -224,11 +224,21 @@ iso-build: depends.txt indigo-tork.sh add-apt-repository
 	$(call colorecho, "Generate the SSH keys if non-existent")
 	sed -i 's%^exit 0%### Generate the SSH keys if non-existent\n[ ! -f /etc/ssh/ssh_host_dsa_key ] \&\& dpkg-reconfigure openssh-server\n\nexit 0%' config/includes.chroot/etc/rc.local
 
+	# http://wiki.linux-xapple.org/w/index.php/Create_Debian_packs#Add_some_hook_scripts_for_live_build
+	$(call colorecho, "setup user")
+	mkdir -p config/hooks/
+	echo '#!/bin/sh' >> config/hooks/0001-setup_user_tork.hook.chroot
+	echo 'echo "I: create tork user"' >> config/hooks/0001-setup_user_tork.hook.chroot
+	echo 'adduser --gecos tork --disabled-login tork' >> config/hooks/0001-setup_user_tork.hook.chroot
+	echo '' >> config/hooks/0001-setup_user_tork.hook.chroot
+	echo 'echo "I: set tork user password"' >> config/hooks/0001-setup_user_tork.hook.chroot
+	echo 'echo "tork:tork" | chpasswd' >> config/hooks/0001-setup_user_tork.hook.chroot
+
 	## use latest kernel
 	#$(call colorecho, "use latest kernel")
 	#sed -i 's@generic-lts-wily@generic-lts-xenial@' config/chroot
 
-	$(call colorecho, "run ubuntu-defaults-image (build part)")
+	$(call colorecho, "run ubuntu-defaults-image in build part")
 	chmod u+x ./tork-defaults-build
 	# run twice http://blog.n-z.jp/blog/2014-07-13-build-rubylive-on-vm.html
 	## running twice may failed (cp: cannot stat 'chroot/boot/vmlinuz-*': No such file or directory) error

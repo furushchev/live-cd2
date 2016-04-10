@@ -15,6 +15,7 @@
   "builders": [
     {
       "type": "qemu",
+      "accelerator": "none",
       "headless": "true",
       "boot_wait": "4s",
       "disk_size": 10140,

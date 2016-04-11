@@ -15,12 +15,23 @@ RUN apt-get install libfuse2; \
               cd /tmp/fuse ; dpkg -i /fuse.deb; \
               rm -fr /tmp/fuse #CIRCLECI#
 
+# user settings
+
+## screen
+ADD scripts/etc/skel/.screenrc  /etc/skel/.screenrc
+ADD scripts/etc/skel/.tmux.conf /etc/skel/.tmux.conf
+ADD scripts/etc/skel/.gnomerc   /etc/skel/.gnomerc
+ADD scripts/etc/skel/.emacs     /etc/skel/.emacs
+ADD scripts/etc/skel/.ros.bashrc  /etc/skel/.ros.bashrc
+## until catkin_tools > 0.3.1 (https://github.com/catkin/catkin_tools/pull/268)
+RUN wget https://patch-diff.githubusercontent.com/raw/catkin/catkin_tools/pull/268.diff -O - | sudo patch -p1 -d /usr/lib/python2.7/dist-packages/
+
 # make home directory (user name other than ubuntu is not woking because it is hard corded /usr/share/livecd-rootfs/live-build/auto/config)
 # we should not run this on live-build
-RUN getent group 999 || groupadd -g 999 ubuntu
-#RUN useradd -p `perl -e "print(crypt('ubuntu', 'jp'));"` ubuntu
-RUN useradd -m -u 999 -g 999 -p jpZUeiXA/a9ws ubuntu || /bin/echo -e "ubuntu\nubuntu\n" | sudo passwd ubuntu
-RUN echo "ubuntu ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/ubuntu
+RUN getent group 999 || groupadd -g 999 tork
+#RUN useradd -p `perl -e "print(crypt('password', 'U6'));"` tork
+RUN useradd -m -u 999 -g 999 -p U6CjLveNVb5n. tork || /bin/echo -e "password\npassword\n" | sudo passwd tork
+RUN echo "tork ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/tork
 
 ##
 ## setup packages
@@ -76,7 +87,7 @@ RUN add-apt-repository -y ppa:yannubuntu/boot-repair && apt-get update && apt-ge
 
 # doocker (this create new groups, so it should be later than creating ubuntu user process)
 RUN wget -qO- https://get.docker.com/ | sh
-RUN usermod -aG docker ubuntu
+RUN usermod -aG docker tork
 
 # inxi
 RUN apt-get -y install inxi
@@ -89,13 +100,11 @@ RUN apt-get clean
 ##
 
 # su user
-USER ubuntu
-WORKDIR /home/ubuntu/
+USER tork
+WORKDIR /home/tork/
 
 # settings
 RUN /bin/echo -e "\n\n# ROS setup\nsource /opt/ros/$ROS_DISTRO/setup.bash\n# This file is created on $(date)\n#" >> ~/.bashrc
-RUN /bin/echo -e "escape ^Tt\nhardstatus alwayslastline '%02c:%s %{= .g}%H%{-} %L=%-w%45L>%{=u g.}%n %t%{-}%+w %-17<%=%{= .y}(%l)'" >> ~/.screenrc
-RUN /bin/echo -e "# Prefix\nset-option -g prefix C-t" >> ~/.tmux.conf
 RUN rosdep update || rosdep update
 
 # make catkin workspace
@@ -114,5 +123,3 @@ RUN wstool info -t ~/catkin_ws/src
 
 # compile with catkin
 RUN cd ~/catkin_ws; . /opt/ros/$ROS_DISTRO/setup.sh; catkin build -p 1 --no-status
-
-

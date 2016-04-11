@@ -224,6 +224,11 @@ iso-build:
 	$(call colorecho, "Generate the SSH keys if non-existent")
 	sed -i 's%^exit 0%### Generate the SSH keys if non-existent\n[ ! -f /etc/ssh/ssh_host_dsa_key ] \&\& dpkg-reconfigure openssh-server\n\nexit 0%' config/includes.chroot/etc/rc.local
 
+	$(call colorecho, "change default password")
+	echo "sed -i 's@blank password@password@' /usr/share/initramfs-tools/scripts/casper-bottom/25adduser" >> config/hooks/80_change_user_name.chroot
+	echo "sed -i 's@U6aMy0wojraho@U6CjLveNVb5n.@' /usr/share/initramfs-tools/scripts/casper-bottom/25adduser" >> config/hooks/80_change_user_name.chroot
+
+
 	## use latest kernel
 	#$(call colorecho, "use latest kernel")
 	#sed -i 's@generic-lts-wily@generic-lts-xenial@' config/chroot

@@ -40,9 +40,6 @@ iso-build-debug:
 	$(call colorecho, "EFI hack")
 	./make-efi-iso.sh
 
-	#$(call colorecho, "rename binary.hybrid.iso")
-	#cp binary.hybrid.iso indigo-tork-`date +%Y%m%d_%H%M%S`.iso
-
 ###
 ###
 ###
@@ -179,7 +176,7 @@ archives/tork-defaults.key:
 	docker run --rm indigo-tork apt-key exportall | gpg --dearmor > archives/tork-defaults.key
 
 
-iso-build: depends.txt indigo-tork.sh add-apt-repository
+iso-build:
 	# install
 	$(call colorecho, "install ubuntu-defaults-builder build-essential")
 	sudo apt-get install -y ubuntu-defaults-builder build-essential xorriso
@@ -224,18 +221,6 @@ iso-build: depends.txt indigo-tork.sh add-apt-repository
 	$(call colorecho, "Generate the SSH keys if non-existent")
 	sed -i 's%^exit 0%### Generate the SSH keys if non-existent\n[ ! -f /etc/ssh/ssh_host_dsa_key ] \&\& dpkg-reconfigure openssh-server\n\nexit 0%' config/includes.chroot/etc/rc.local
 
-	# http://wiki.linux-xapple.org/w/index.php/Create_Debian_packs#Add_some_hook_scripts_for_live_build
-	$(call colorecho, "setup user")
-	mkdir -p config/hooks/
-	echo '#!/bin/sh' >> config/hooks/0001-setup_user_tork.hook.chroot
-	echo 'echo "I: create tork user"' >> config/hooks/0001-setup_user_tork.hook.chroot
-	echo 'adduser --gecos tork --disabled-login tork' >> config/hooks/0001-setup_user_tork.hook.chroot
-	echo '' >> config/hooks/0001-setup_user_tork.hook.chroot
-	echo 'echo "I: set tork user password"' >> config/hooks/0001-setup_user_tork.hook.chroot
-	echo 'echo "tork:tork" | chpasswd' >> config/hooks/0001-setup_user_tork.hook.chroot
-	echo '' >> config/hooks/0001-setup_user_tork.hook.chroot
-	echo 'echo "I: add tork user to sudo"' >> config/hooks/0001-setup_user_tork.hook.chroot
-	echo 'echo "tork ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/tork' >> config/hooks/0001-setup_user_tork.hook.chroot
 
 	## use latest kernel
 	#$(call colorecho, "use latest kernel")
@@ -251,9 +236,6 @@ iso-build: depends.txt indigo-tork.sh add-apt-repository
 	# https://lists.ubuntu.com/archives/ubuntu-devel/2014-November/038540.html
 	$(call colorecho, "EFI hack")
 	./make-efi-iso.sh
-
-	#$(call colorecho, "rename binary.hybrid.iso")
-	#cp binary.hybrid.iso indigo-tork-`date +%Y%m%d_%H%M%S`.iso
 
 iso-run:
 	$(call colorecho, "run indigo.tork.iso with kvm")

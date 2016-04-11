@@ -20,7 +20,7 @@ sudo find . -type f -exec md5sum {} \; | grep -v isolinux | grep -v md5sum.txt |
 #sed -i 's@default vesamenu.c32@default live@' isolinux/isolinux.cfg
 sudo sed -i 's@^ui @#ui @' isolinux/isolinux.cfg
 # remove prompt to eject cd : http://www.pendrivelinux.com/ubuntu-remove-the-prompt-to-eject-cd/
-sudo sed -i 's@quiet splash --@quiet splash noprompt --@' isolinux/txt.cfg
+sudo sed -i 's@quiet splash --@quiet splash noprompt username=tork --@' isolinux/txt.cfg
 
 cd ..
 cat <<EOF | sudo tee sort.txt

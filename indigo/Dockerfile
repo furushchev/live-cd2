@@ -15,16 +15,44 @@ RUN apt-get install libfuse2; \
               cd /tmp/fuse ; dpkg -i /fuse.deb; \
               rm -fr /tmp/fuse #CIRCLECI#
 
-# user settings
+# user settings (https://github.com/docker/docker/issues/16058)
 
 ## screen
-ADD scripts/etc/skel/.screenrc  /etc/skel/.screenrc
-ADD scripts/etc/skel/.tmux.conf /etc/skel/.tmux.conf
-ADD scripts/etc/skel/.gnomerc   /etc/skel/.gnomerc
-ADD scripts/etc/skel/.emacs     /etc/skel/.emacs
-ADD scripts/etc/skel/.ros.bashrc  /etc/skel/.ros.bashrc
-## until catkin_tools > 0.3.1 (https://github.com/catkin/catkin_tools/pull/268)
-RUN wget https://patch-diff.githubusercontent.com/raw/catkin/catkin_tools/pull/268.diff -O - | sudo patch -p1 -d /usr/lib/python2.7/dist-packages/
+RUN echo "# screenrc\n\
+escape ^Tt\n\
+hardstatus alwayslastline '%02c:%s %{= .g}%H%{-} %L=%-w%45L>%{=u g.}%n %t%{-}%+w %-17<%=%{= .y}(%l)'\n\
+" > /etc/skel/.screenrc
+
+## tmux
+RUN echo "# Prefix\n\
+set-option -g prefix C-t\n\
+" > /etc/skel/.tmux.conf
+
+## gnomerc
+RUN echo "# Japnese settings\n\
+gsettings set org.gnome.desktop.input-sources sources [('xkb', 'jp') ('ibus', 'mozc-jp')]\n\
+gsettings set org.gnome.desktop.input-sourc xkb-options ['ctrl:swapcaps']\n\
+" >  /etc/skel/.gnomerc
+
+## .emacs
+RUN echo ";; emacs settings\n\
+\n\
+(global-set-key \"\C-h\" 'backward-delete-char)\n\
+(global-set-key \"\M-g\" 'goto-line)\n\
+(global-unset-key \"\C-o\" )\n\
+
+(setq rosdistro (getenv \"ROS_DISTRO\"))\n\
+(add-to-list 'load-path (format \"/opt/ros/%s/share/emacs/site-lisp\" (or rosdistro \"indigo\")))\n\
+(require 'rosemacs)\n\
+(invoke-rosemacs)\n\
+(global-set-key \"\C-x\C-r\" ros-keymap)\n\
+" >  /etc/skel/.emacs
+
+## .ros.bashrc
+RUN echo "\n\
+source /opt/ros/indigo/setup.bash\n\
+source \`catkin --locate-extra-shell-verbs\`\n\
+" > /etc/skel/.ros.bashrc
 
 # make home directory (user name other than ubuntu is not woking because it is hard corded /usr/share/livecd-rootfs/live-build/auto/config)
 # we should not run this on live-build
@@ -44,6 +72,8 @@ RUN apt-get -y install language-pack-gnome-ja latex-cjk-japanese xfonts-intl-jap
 
 # ros dev. tools
 RUN apt-get -y install python-catkin-tools
+## until catkin_tools > 0.3.1 (https://github.com/catkin/catkin_tools/pull/268)
+RUN wget https://patch-diff.githubusercontent.com/raw/catkin/catkin_tools/pull/268.diff -O - | sudo patch -p1 -d /usr/lib/python2.7/dist-packages/
 
 RUN apt-get -y install ros-$ROS_DISTRO-jsk-tools
 RUN apt-get -y install ros-$ROS_DISTRO-jsk-rviz-plugins

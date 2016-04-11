@@ -24,7 +24,7 @@
       "iso_checksum_type": "md5",
       "iso_url": "@ISO_URL@",
       "ssh_username": "tork",
-      "ssh_password": "tork",
+      "ssh_password": "password",
       "ssh_port": 22,
       "ssh_wait_timeout": "1000s",
       "shutdown_command": "echo 'shutdown -P now' > shutdown.sh; sudo -S sh 'shutdown.sh'"

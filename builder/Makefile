@@ -176,13 +176,16 @@ archives/tork-defaults.key:
 	docker run --rm indigo-tork apt-key exportall | gpg --dearmor > archives/tork-defaults.key
 
 
-iso-build: depends.txt indigo-tork.sh add-apt-repository
+iso-build:
 	# install
 	$(call colorecho, "install ubuntu-defaults-builder build-essential")
 	sudo apt-get install -y ubuntu-defaults-builder build-essential xorriso
 
 	$(call colorecho, "make indigo-tork.sh")
 	make indigo-tork.sh
+
+	$(call colorecho, "make depends.txt")
+	make depends.txt
 
 	### ubuntu-defaults-image
 	$(call colorecho, "make tork-defaults")

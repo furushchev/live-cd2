@@ -176,7 +176,7 @@ archives/tork-defaults.key:
 	docker run --rm indigo-tork apt-key exportall | gpg --dearmor > archives/tork-defaults.key
 
 
-iso-build:
+iso-build: depends.txt indigo-tork.sh add-apt-repository
 	# install
 	$(call colorecho, "install ubuntu-defaults-builder build-essential")
 	sudo apt-get install -y ubuntu-defaults-builder build-essential xorriso
@@ -220,7 +220,6 @@ iso-build:
 	cp /etc/rc.local config/includes.chroot/etc/
 	$(call colorecho, "Generate the SSH keys if non-existent")
 	sed -i 's%^exit 0%### Generate the SSH keys if non-existent\n[ ! -f /etc/ssh/ssh_host_dsa_key ] \&\& dpkg-reconfigure openssh-server\n\nexit 0%' config/includes.chroot/etc/rc.local
-
 
 	## use latest kernel
 	#$(call colorecho, "use latest kernel")

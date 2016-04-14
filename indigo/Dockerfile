@@ -126,6 +126,9 @@ RUN usermod -aG docker tork
 # inxi
 RUN apt-get -y install inxi
 
+# NVMe for 4.4 https://bugzilla.kernel.org/show_bug.cgi?id=108981
+RUN apt-get -y install initramfs-tools && echo "nvme" >> /etc/initramfs-tools/modules && update-initramfs -u
+
 ## clean up
 RUN apt-get clean
 

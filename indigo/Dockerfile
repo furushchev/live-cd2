@@ -88,6 +88,7 @@ RUN apt-get -y install ros-$ROS_DISTRO-fetch-gazebo-demo ros-$ROS_DISTRO-fetch-t
 RUN apt-get -y install ros-$ROS_DISTRO-pr2-simulator ros-$ROS_DISTRO-pr2-navigation
 RUN apt-get -y install ros-$ROS_DISTRO-teleop-twist-joy ros-$ROS_DISTRO-teleop-twist-keyboard
 RUN apt-get -y install ros-$ROS_DISTRO-uvc-camera ros-$ROS_DISTRO-opencv-apps
+RUN apt-get -y install ros-$ROS_DISTRO-dynamixel-controllers ros-$ROS_DISTRO-leap-motion
 
 RUN apt-get -y install ros-$ROS_DISTRO-rosemacs
 
